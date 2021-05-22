@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  db:
+    container_name: psql
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: auth
+    ports:
+      - '5432:5432'
+    volumes:
+      - pg_data:/var/lib/postgresql/data/
+  # app:
+  #   container_name: app
+  #   build:
+  #     context: .
+  #     target: dev
+  #   ports:
+  #     - '80:80'
+  #     - '6000:6000'
+  #     - '8080:8080'
+  #     - '5000:5000'
+  #   expose:
+  #     - '8080'
+  #     - '6000'
+  #     - '80'
+  #   volumes:
+  #     - .:/app
+  #   command: reflex -r "\.go$$" -s -- sh -c "go run ./"
+
+volumes:
+  pg_data:

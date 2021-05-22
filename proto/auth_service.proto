@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package pb;
+
+option go_package = ".;___pb";
+
+import "proto/user.proto";
+
+message LoginRequest{
+    User user = 1;
+}
+
+message LoginResponse{
+    string user_name = 1;
+    string name = 2;
+    string role = 3;
+    string access_token = 4;
+    string refresh_token = 5;
+}
+
+message VerifyUserRequest{
+    string accessToken = 1;
+}
+
+service AuthService{
+    rpc Login(LoginRequest) returns (LoginResponse) {}
+    rpc VerifyUser(VerifyUserRequest) returns (VerifyUserRequest){}
+}
