@@ -1,9 +1,9 @@
 package auth
 
 import (
+	"jwt-auth/api/user"
 	"jwt-auth/model"
 	pb "jwt-auth/pb"
-	"jwt-auth/user"
 
 	"gorm.io/gorm"
 )

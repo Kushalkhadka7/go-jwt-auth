@@ -3,6 +3,9 @@ package user
 import (
 	"context"
 	pb "jwt-auth/pb"
+	"jwt-auth/util"
+
+	"google.golang.org/grpc/codes"
 )
 
 type UserServer struct {
@@ -17,12 +20,16 @@ func (us *UserServer) CreateUser(ctx context.Context, req *pb.CreateUserRequest)
 
 	res, err := us.Servicer.CreateUser(req.User)
 	if err != nil {
-		return nil, err
+		return nil, util.NewResponse(codes.Internal, "Internal Server", err).Error()
 	}
 
 	return &pb.CreateUserResponse{
-		Name:     res.Name,
-		Message:  "Successfully created user.",
-		UserName: res.Name,
+		Message: "Successfully created user.",
+		Status:  200,
+		Data: &pb.UserData{
+			Name:     res.Name,
+			UserName: res.Name,
+			Role:     pb.UserData_ADMIN,
+		},
 	}, nil
 }

@@ -1,9 +1,9 @@
 package app
 
 import (
-	"jwt-auth/auth"
+	"jwt-auth/api/auth"
+	"jwt-auth/api/user"
 	pb "jwt-auth/pb"
-	"jwt-auth/user"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"

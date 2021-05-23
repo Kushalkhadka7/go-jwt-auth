@@ -6,8 +6,9 @@ option go_package = ".;___pb";
 
 message User {
     enum Role{
-        ADMIN = 0;
-        USER = 1;
+        UNKNOWN = 0;
+        ADMIN = 1;
+        USER = 2;
     }
 
     string name = 1;

@@ -12,10 +12,25 @@ message CreateUserRequest{
 
 message CreateUserResponse{
     string message = 1;
-    string name = 2;
-    string user_name = 3;
+    int64 status = 2;
+    UserData data = 3;
+  
+}
+
+message UserData{
+    enum Role{
+        UNKNOWN = 0;
+        ADMIN = 1;
+        USER = 2;
+    }
+
+    string name = 1;
+    string user_name = 2;
+    Role role = 3;
 }
 
 service UserService{
-    rpc CreateUser (CreateUserRequest) returns (CreateUserResponse){}
+    rpc CreateUser (CreateUserRequest) returns (CreateUserResponse){
+       
+    }
 }
