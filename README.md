@@ -10,3 +10,6 @@ Authentication module using go and grpc
 4.CI to run on push and pull requests.
 5.Tests (unit and integration).
 6.Load balancing with nginx.
+7.Fix docker files and make config from external env.
+8.Logging configurations.
+9.Interceptors and middlewares.
