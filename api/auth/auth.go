@@ -24,7 +24,7 @@ func NewAuth(conn *gorm.DB) AuthI {
 }
 
 func (auth *Auth) CreateUser(usr *pb.User) (*model.User, error) {
-	user := user.NewUser(auth.conn)
+	user := user.NewUserStore(auth.conn)
 
 	newUser, err := user.CreateUser(usr)
 	if err != nil {
@@ -38,7 +38,7 @@ func (auth *Auth) CreateUser(usr *pb.User) (*model.User, error) {
 }
 
 func (auth *Auth) CheckUserExistence(usr *pb.User) (bool, error) {
-	user := user.NewUser(auth.conn)
+	user := user.NewUserStore(auth.conn)
 
 	userExists, err := user.CheckUserExistence(usr)
 	if err != nil {

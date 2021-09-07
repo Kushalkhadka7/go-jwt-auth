@@ -37,5 +37,8 @@ func main() {
 	appServer := app.NewAppServer(dbConn)
 	appServer.RegisterServers(grpcServer)
 
-	grpcServer.Serve(listenter)
+	if err := grpcServer.Serve(listenter); err != nil {
+		log.Fatalf("Cannot initialize http server: %s", err)
+		os.Exit(1)
+	}
 }

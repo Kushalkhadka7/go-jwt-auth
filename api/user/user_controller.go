@@ -8,16 +8,18 @@ import (
 	"google.golang.org/grpc/codes"
 )
 
-type UserServer struct {
+// UserController is a interface which exposes the methods that are available for user end points.
+type UserController struct {
 	Servicer
 }
 
-func New(service Servicer) *UserServer {
-	return &UserServer{service}
+// New initializes new user contorller.
+func New(service Servicer) *UserController {
+	return &UserController{service}
 }
 
-func (us *UserServer) CreateUser(ctx context.Context, req *pb.CreateUserRequest) (*pb.CreateUserResponse, error) {
-
+// CreateUser method creates user.
+func (us *UserController) CreateUser(ctx context.Context, req *pb.CreateUserRequest) (*pb.CreateUserResponse, error) {
 	res, err := us.Servicer.CreateUser(req.User)
 	if err != nil {
 		return nil, util.NewResponse(codes.Internal, "Internal Server", err).Error()

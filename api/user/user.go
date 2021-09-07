@@ -8,25 +8,30 @@ import (
 	"gorm.io/gorm"
 )
 
-type User struct {
+// Store is a data structure to populate with credentails and methods that are required to perform operations against db.
+type Store struct {
 	table string
 	db    *gorm.DB
 }
 
-type UserI interface {
+// Storer is a interface that exposses methods that are used to perform operation on user against db.
+type Storer interface {
 	CreateUser(user *pb.User) (*model.User, error)
 	CheckUserExistence(user *pb.User) (bool, error)
 }
 
-func NewUser(db *gorm.DB) UserI {
-	return &User{
+// NewUserStore initializes new user store with associated table and db connection.
+func NewUserStore(db *gorm.DB) Storer {
+	return &Store{
 		table: "user",
 		db:    db,
 	}
 }
 
-func (auth *User) CreateUser(user *pb.User) (*model.User, error) {
+// CreateUser creates and saves user in db.
+func (s *Store) CreateUser(user *pb.User) (*model.User, error) {
 	userModel := model.User{}
+
 	newUser := model.User{
 		Name:      user.Name,
 		Password:  user.Password,
@@ -35,12 +40,12 @@ func (auth *User) CreateUser(user *pb.User) (*model.User, error) {
 		UpdatedAt: time.Now(),
 	}
 
-	data := auth.db.Model(&userModel).Create(newUser)
-	if data.Error != nil {
-		return nil, data.Error
+	res := s.db.Model(&userModel).Create(newUser)
+	if res.Error != nil {
+		return nil, res.Error
 	}
 
-	if data == nil {
+	if res == nil {
 		return nil, nil
 	}
 
@@ -48,7 +53,7 @@ func (auth *User) CreateUser(user *pb.User) (*model.User, error) {
 }
 
 // CheckUserExistence checks either the given user already exist in db or not.
-func (auth *User) CheckUserExistence(user *pb.User) (bool, error) {
+func (auth *Store) CheckUserExistence(user *pb.User) (bool, error) {
 	userModel := model.User{}
 
 	data := auth.db.Where("name = ?", user.Name).Find(&userModel)

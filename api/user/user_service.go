@@ -8,20 +8,20 @@ import (
 )
 
 type Service struct {
-	user UserI
+	Storer
 }
 
 type Servicer interface {
 	CreateUser(user *pb.User) (*pb.User, error)
 }
 
-func NewService(user UserI) Servicer {
-	return &Service{user}
+func NewService(store Storer) Servicer {
+	return &Service{store}
 }
 
 // CreateUser checks either the given user exist or not, if not creates new user.
-func (s *Service) CreateUser(user *pb.User) (*pb.User, error) {
-	userExists, err := s.user.CheckUserExistence(user)
+func (svc *Service) CreateUser(user *pb.User) (*pb.User, error) {
+	userExists, err := svc.CheckUserExistence(user)
 	if err != nil {
 		return nil, err
 	}
@@ -36,7 +36,7 @@ func (s *Service) CreateUser(user *pb.User) (*pb.User, error) {
 	}
 	user.Password = string(hashedPassword)
 
-	newUser, err := s.user.CreateUser(user)
+	newUser, err := svc.CreateUser(user)
 	if err != nil {
 		return nil, err
 	}

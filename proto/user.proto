@@ -14,4 +14,5 @@ message User {
     string name = 1;
     string password = 2;
     Role role = 3;
+    string email = 4;
 }
