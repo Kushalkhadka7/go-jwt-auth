@@ -44,7 +44,9 @@ func (server *Server) GetHttpListener() (net.Listener, error) {
 
 // GetGrpcServerInstance returns a grpc server instance.
 func (server *Server) GetGrpcServerInstance() (*grpc.Server, error) {
-	grpcServer := grpc.NewServer()
+	grpcServer := grpc.NewServer(
+	// grpc.UnaryInterceptor(interceptor.NewUnary().Unary()),
+	)
 
 	return grpcServer, nil
 }

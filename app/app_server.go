@@ -29,10 +29,10 @@ func NewAppServer(db *gorm.DB) AppCreator {
 func (server *App) RegisterServers(grpcServer *grpc.Server) {
 
 	// Register user server and service to grpc server.
-	userModel := user.NewUserStore(server.db)
-	userService := user.NewService(userModel)
-	userServer := user.New(userService)
-	pb.RegisterUserServiceServer(grpcServer, userServer)
+	userStore := user.NewStore(server.db)
+	userService := user.NewService(userStore)
+	userContorller := user.NewController(userService)
+	pb.RegisterUserServiceServer(grpcServer, userContorller)
 
 	// Register auth server and auth to grpc server.
 	authModel := auth.NewAuth(server.db)

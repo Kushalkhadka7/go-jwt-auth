@@ -22,7 +22,17 @@ message VerifyUserRequest{
     string accessToken = 1;
 }
 
+message VerifyUserResponse{
+    string name = 1;
+    string role = 2;
+    string user_name = 3;
+    string access_token = 4;
+    string refresh_token = 5;
+    string is_active = 6;
+}
+
+
 service AuthService{
     rpc Login(LoginRequest) returns (LoginResponse) {}
-    rpc VerifyUser(VerifyUserRequest) returns (VerifyUserRequest){}
+    rpc VerifyUser(VerifyUserRequest) returns (VerifyUserResponse){}
 }

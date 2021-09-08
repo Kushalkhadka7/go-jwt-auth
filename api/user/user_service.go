@@ -8,11 +8,14 @@ import (
 )
 
 type Service struct {
-	Storer
+	store Storer
 }
 
 type Servicer interface {
+	DeleteUser(email, userName string) (*pb.User, error)
 	CreateUser(user *pb.User) (*pb.User, error)
+	ActivateUser(isActive bool) (*pb.User, error)
+	DeactivateUser(isActive bool) (*pb.User, error)
 }
 
 func NewService(store Storer) Servicer {
@@ -21,7 +24,9 @@ func NewService(store Storer) Servicer {
 
 // CreateUser checks either the given user exist or not, if not creates new user.
 func (svc *Service) CreateUser(user *pb.User) (*pb.User, error) {
-	userExists, err := svc.CheckUserExistence(user)
+	fmt.Println("called")
+	userExists, err := svc.store.CheckUserExistence(user)
+	fmt.Println("called2c")
 	if err != nil {
 		return nil, err
 	}
@@ -48,5 +53,42 @@ func (svc *Service) CreateUser(user *pb.User) (*pb.User, error) {
 	return &pb.User{
 		Name:     newUser.Name,
 		Password: string(hashedPassword),
+	}, nil
+}
+
+func (svc *Service) DeactivateUser(isActive bool) (*pb.User, error) {
+	res, err := svc.store.DeactivateUser(isActive)
+	fmt.Println("called2cccc")
+	if err != nil {
+		return nil, err
+	}
+
+	return &pb.User{
+		Name:  res.Name,
+		Email: res.Email,
+	}, nil
+}
+
+func (svc *Service) ActivateUser(isActive bool) (*pb.User, error) {
+	res, err := svc.store.ActivateUser(isActive)
+	if err != nil {
+		return nil, err
+	}
+
+	return &pb.User{
+		Name:  res.Name,
+		Email: res.Email,
+	}, nil
+}
+
+func (svc *Service) DeleteUser(email, userName string) (*pb.User, error) {
+	res, err := svc.store.DeleteUser(email, userName)
+	if err != nil {
+		return nil, err
+	}
+
+	return &pb.User{
+		Name:  res.Name,
+		Email: res.Email,
 	}, nil
 }

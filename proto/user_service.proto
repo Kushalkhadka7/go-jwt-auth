@@ -27,8 +27,49 @@ message UserData{
     string user_name = 2;
     Role role = 3;
     string email = 4;
+    bool is_active = 5;
+}
+
+message UpdateUserRequest{
+    string user_name = 2;
+    string email = 4;
+}
+
+message DeactivateUserRequest{
+    bool is_active = 1;
+}
+
+message ActivateUserRequest{
+    bool is_active = 1;
+}
+
+message ActivateUserResponse{
+    string message = 1;
+    int64 status = 2;
+    UserData data = 3;
+}
+
+message DeactivateUserResponse{
+    string message = 1;
+    int64 status = 2;
+    UserData data = 3;
+}
+
+message DeleteUserRequest{
+    string email = 4;
+    string user_name = 2;
+}
+
+message DeleteUserResponse{
+    string message = 1;
+    int64 status = 2;
+    UserData data = 3;
 }
 
 service UserService{
+    rpc UpdateUser (UpdateUserRequest) returns (UpdateUserRequest){}
+    rpc DeleteUser (DeleteUserRequest) returns (DeleteUserResponse){}
     rpc CreateUser (CreateUserRequest) returns (CreateUserResponse){}
+    rpc ActivateUser (ActivateUserRequest) returns (ActivateUserResponse){}
+    rpc DeactivateUser (DeactivateUserRequest) returns (DeactivateUserResponse){}
 }

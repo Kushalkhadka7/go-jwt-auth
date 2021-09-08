@@ -30,13 +30,11 @@ func (us *AuthServer) Login(ctx context.Context, req *pb.LoginRequest) (*pb.Logi
 	}, nil
 }
 
-func (us *AuthServer) VerifyUser(ctx context.Context, req *pb.VerifyUserRequest) (*pb.VerifyUserRequest, error) {
-	res, err := us.Servicer.VerifyLoggedInUser(req.AccessToken)
+func (us *AuthServer) VerifyUser(ctx context.Context, req *pb.VerifyUserRequest) (*pb.VerifyUserResponse, error) {
+	_, err := us.Servicer.VerifyLoggedInUser(req.AccessToken)
 	if err != nil {
 		return nil, err
 	}
 
-	return &pb.VerifyUserRequest{
-		AccessToken: res["accessToken"],
-	}, nil
+	return nil, nil
 }
