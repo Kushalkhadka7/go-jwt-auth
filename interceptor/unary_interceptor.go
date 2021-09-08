@@ -4,10 +4,13 @@ import (
 	"context"
 	"fmt"
 	pb "jwt-auth/pb"
+	"strings"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
 )
+
+var validaitonRules = []string{"Login", "CreateUser"}
 
 // UnaryInterceptor initializes new auth interceptor.
 type UnaryInterceptor struct{}
@@ -25,12 +28,18 @@ func (interceptor *UnaryInterceptor) Unary() grpc.UnaryServerInterceptor {
 		info *grpc.UnaryServerInfo,
 		handler grpc.UnaryHandler,
 	) (resp interface{}, err error) {
-		fmt.Println("i am called")
+		ok := SkipValidation(info.FullMethod)
+		if ok {
+			return handler(ctx, req)
+		}
+
+		fmt.Printf("%s\n", req)
 		md, ok := metadata.FromIncomingContext(ctx)
 		if !ok {
 			return nil, err
 		}
 
+		fmt.Printf("%s", info.FullMethod)
 		values := md["authorization"]
 		if len(values) == 0 {
 			return nil, err
@@ -73,4 +82,22 @@ func createAuthClient() (pb.AuthServiceClient, error) {
 	authCleint := pb.NewAuthServiceClient(serverConn)
 
 	return authCleint, nil
+}
+
+func SkipValidation(url string) bool {
+	ok := false
+	authenticatedList := strings.Split(url, "/")
+
+	for _, v := range validaitonRules {
+		for _, vl := range authenticatedList {
+			fmt.Println(v, vl)
+			if v == vl {
+				ok = true
+
+				break
+			}
+		}
+	}
+
+	return ok
 }
