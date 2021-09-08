@@ -21,6 +21,7 @@ require (
 	github.com/golangci/ineffassign v0.0.0-20190609212857-42439a7714cc // indirect
 	github.com/golangci/prealloc v0.0.0-20180630174525-215b22d4de21 // indirect
 	github.com/google/go-github/v28 v28.1.1 // indirect
+	github.com/google/uuid v1.3.0 // indirect
 	github.com/googleapis/gax-go v2.0.2+incompatible // indirect
 	github.com/gostaticanalysis/analysisutil v0.6.1 // indirect
 	github.com/grpc-ecosystem/grpc-gateway v1.16.0 // indirect

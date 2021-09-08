@@ -41,7 +41,7 @@ func (svc *Service) CreateUser(user *pb.User) (*pb.User, error) {
 	}
 	user.Password = string(hashedPassword)
 
-	newUser, err := svc.CreateUser(user)
+	newUser, err := svc.store.CreateUser(user)
 	if err != nil {
 		return nil, err
 	}

@@ -6,6 +6,7 @@ import (
 	pb "jwt-auth/pb"
 	"time"
 
+	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
 
@@ -37,11 +38,12 @@ func (s *Store) CreateUser(user *pb.User) (*model.User, error) {
 	userModel := model.User{}
 
 	newUser := model.User{
+		Id:           uuid.NewString(),
 		Name:         user.Name,
 		Password:     user.Password,
 		UserName:     user.Name,
 		Email:        user.GetEmail(),
-		Role:         user.GetRole().String(),
+		Role:         "ADMIN",
 		AccessToken:  "",
 		RefreshToken: "",
 		IsActive:     true,

@@ -3,7 +3,7 @@ package migration
 import "time"
 
 type User struct {
-	Id           string    `json:"id" gorm:"primaryKey autoIncrement"`
+	Id           string    `json:"id" gorm:"primaryKey"`
 	Name         string    `json:"name"`
 	UserName     string    `json:"user_name" gorm:"unique"`
 	Password     string    `json:"password"`
