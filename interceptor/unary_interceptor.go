@@ -7,7 +7,6 @@ import (
 	"strings"
 
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/metadata"
 )
 
 var validaitonRules = []string{"Login", "CreateUser"}
@@ -28,44 +27,42 @@ func (interceptor *UnaryInterceptor) Unary() grpc.UnaryServerInterceptor {
 		info *grpc.UnaryServerInfo,
 		handler grpc.UnaryHandler,
 	) (resp interface{}, err error) {
-		ok := SkipValidation(info.FullMethod)
-		if ok {
-			return handler(ctx, req)
-		}
+		return handler(ctx, req)
+		// ok := SkipValidation(info.FullMethod)
+		// if ok {
+		// }
 
-		fmt.Printf("%s\n", req)
-		md, ok := metadata.FromIncomingContext(ctx)
-		if !ok {
-			return nil, err
-		}
+		// md, ok := metadata.FromIncomingContext(ctx)
+		// if !ok {
+		// 	return nil, err
+		// }
 
-		fmt.Printf("%s", info.FullMethod)
-		values := md["authorization"]
-		if len(values) == 0 {
-			return nil, err
-		}
+		// values := md["authorization"]
+		// if len(values) == 0 {
+		// 	return nil, err
+		// }
 
-		accessToken := values[0]
-		authReq := &pb.VerifyUserRequest{
-			AccessToken: accessToken,
-		}
+		// accessToken := values[0]
+		// authReq := &pb.VerifyUserRequest{
+		// 	AccessToken: accessToken,
+		// }
 
-		authCleint, err := createAuthClient()
-		if err != nil {
-			return nil, err
-		}
+		// authCleint, err := createAuthClient()
+		// if err != nil {
+		// 	return nil, err
+		// }
 
-		res, err := authCleint.VerifyUser(ctx, authReq)
-		if err != nil {
-			return nil, err
+		// res, err := authCleint.VerifyUser(ctx, authReq)
+		// if err != nil {
+		// 	return nil, err
 
-		}
+		// }
 
-		var result *pb.VerifyUserResponse
+		// var result *pb.VerifyUserResponse
 
-		context := context.WithValue(ctx, result, res)
-		fmt.Println("i am called1")
-		return handler(context, req)
+		// context := context.WithValue(ctx, result, res)
+		// fmt.Printf("%s", "i am called")
+		// return handler(context, req)
 	}
 
 }

@@ -3,44 +3,29 @@ package auth
 import (
 	"jwt-auth/api/user"
 	"jwt-auth/model"
-	pb "jwt-auth/pb"
 
 	"gorm.io/gorm"
 )
 
-type Auth struct {
+type Store struct {
 	conn *gorm.DB
 }
 
-type AuthI interface {
-	CreateUser(usr *pb.User) (*model.User, error)
-	CheckUserExistence(usr *pb.User) (bool, error)
+type Storer interface {
+	CheckUserExistence(email string) (bool, error)
+	GetUser(email, userName string) (*model.User, error)
 }
 
-func NewAuth(conn *gorm.DB) AuthI {
-	return &Auth{
+func NewAuth(conn *gorm.DB) Storer {
+	return &Store{
 		conn,
 	}
 }
 
-func (auth *Auth) CreateUser(usr *pb.User) (*model.User, error) {
+func (auth *Store) CheckUserExistence(email string) (bool, error) {
 	user := user.NewStore(auth.conn)
 
-	newUser, err := user.CreateUser(usr)
-	if err != nil {
-		return nil, err
-	}
-	if newUser == nil {
-		return nil, nil
-	}
-
-	return newUser, nil
-}
-
-func (auth *Auth) CheckUserExistence(usr *pb.User) (bool, error) {
-	user := user.NewStore(auth.conn)
-
-	userExists, err := user.CheckUserExistence(usr)
+	userExists, err := user.CheckUserExistence(email)
 	if err != nil {
 		return false, nil
 	}
@@ -50,4 +35,19 @@ func (auth *Auth) CheckUserExistence(usr *pb.User) (bool, error) {
 	}
 
 	return false, nil
+}
+
+func (auth *Store) GetUser(email, userName string) (*model.User, error) {
+	us := user.NewStore(auth.conn)
+
+	response, err := us.GetUser(email, userName)
+	if err != nil {
+		return nil, nil
+	}
+
+	if response == nil {
+		return nil, nil
+	}
+
+	return response, nil
 }

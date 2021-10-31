@@ -6,6 +6,21 @@ option go_package = ".;___pb";
 
 import "proto/user.proto";
 
+message UserData{
+    enum Role{
+        UNKNOWN = 0;
+        ADMIN = 1;
+        USER = 2;
+    }
+    string id = 1;
+    string user_name = 2;
+    string name = 3;
+    string email = 4;
+    Role role = 5;
+    bool is_active = 6;
+}
+
+// Creating user.
 message CreateUserRequest{
     User user = 1;
 }
@@ -16,31 +31,10 @@ message CreateUserResponse{
     UserData data = 3;
 }
 
-message UserData{
-    enum Role{
-        UNKNOWN = 0;
-        ADMIN = 1;
-        USER = 2;
-    }
-
-    string name = 1;
-    string user_name = 2;
-    Role role = 3;
-    string email = 4;
-    bool is_active = 5;
-}
-
-message UpdateUserRequest{
-    string user_name = 2;
-    string email = 4;
-}
-
-message DeactivateUserRequest{
-    bool is_active = 1;
-}
-
+// Activate user.
 message ActivateUserRequest{
-    bool is_active = 1;
+    string user_name = 1;
+    string email = 2;
 }
 
 message ActivateUserResponse{
@@ -49,12 +43,19 @@ message ActivateUserResponse{
     UserData data = 3;
 }
 
+// Deactivate user.
+message DeactivateUserRequest{
+    string user_name = 1;
+    string email = 2;
+}
+
 message DeactivateUserResponse{
     string message = 1;
     int64 status = 2;
     UserData data = 3;
 }
 
+// Delete user.
 message DeleteUserRequest{
     string email = 4;
     string user_name = 2;
@@ -66,7 +67,27 @@ message DeleteUserResponse{
     UserData data = 3;
 }
 
+
+message UpdateUserRequest{
+    string user_name = 2;
+    string email = 4;
+}
+
+
+message GetUserRequest{
+    string email = 4;
+    string user_name = 2;
+}
+
+message GetUserResponse{
+    string message = 1;
+    int64 status = 2;
+    UserData data = 3;
+}
+
+
 service UserService{
+    rpc GetUser (GetUserRequest) returns (GetUserResponse){}
     rpc UpdateUser (UpdateUserRequest) returns (UpdateUserRequest){}
     rpc DeleteUser (DeleteUserRequest) returns (DeleteUserResponse){}
     rpc CreateUser (CreateUserRequest) returns (CreateUserResponse){}

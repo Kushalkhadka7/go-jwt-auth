@@ -4,18 +4,29 @@ package pb;
 
 option go_package = ".;___pb";
 
-import "proto/user.proto";
+
+message LoginData{
+    string id = 1;
+    string name = 2;
+    string user_name = 3;
+    string email = 4;
+    bool is_active = 5;
+    string role = 6;
+    string access_token = 7;
+    string refresh_token = 8;
+}
 
 message LoginRequest{
-    User user = 1;
+    string user_name = 1;
+    string email = 2;
+    string password = 3;
 }
 
 message LoginResponse{
-    string user_name = 1;
-    string name = 2;
-    string role = 3;
-    string access_token = 4;
-    string refresh_token = 5;
+    string message = 1;
+    int64 status = 2;
+    LoginData data = 3;
+
 }
 
 message VerifyUserRequest{
@@ -23,12 +34,9 @@ message VerifyUserRequest{
 }
 
 message VerifyUserResponse{
-    string name = 1;
-    string role = 2;
-    string user_name = 3;
-    string access_token = 4;
-    string refresh_token = 5;
-    string is_active = 6;
+    string message = 1;
+    int64 status = 2;
+    LoginData data = 3;
 }
 
 
