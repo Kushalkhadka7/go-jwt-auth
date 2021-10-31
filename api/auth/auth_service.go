@@ -1,22 +1,24 @@
 package auth
 
 import (
+	"fmt"
 	"jwt-auth/common"
-	pb "jwt-auth/pb"
 	"time"
+
+	pb "jwt-auth/pb"
 )
 
 type Service struct {
 	jwtManager *common.JWTManager
-	auth       AuthI
+	auth       Storer
 }
 
 type Servicer interface {
-	Login(user *pb.User) (map[string]string, error)
-	VerifyLoggedInUser(accessToken string) (map[string]string, error)
+	Login(userName, email, password string) (*pb.LoginData, error)
+	VerifyLoggedInUser(accessToken string) (map[string]interface{}, error)
 }
 
-func NewService(auth AuthI) Servicer {
+func NewService(auth Storer) Servicer {
 	jwtManager := common.NewJWTManager()
 
 	return &Service{
@@ -25,42 +27,69 @@ func NewService(auth AuthI) Servicer {
 	}
 }
 
-func (s *Service) Login(usr *pb.User) (map[string]string, error) {
-	userExisted, err := s.auth.CheckUserExistence(usr)
+func (s *Service) Login(userName, email, password string) (*pb.LoginData, error) {
+	userExists, err := s.auth.CheckUserExistence(email)
 	if err != nil {
 		return nil, err
 	}
 
-	if userExisted {
-		tokens, err := s.jwtManager.GenerateTokens("kushal", 1000*time.Second, usr)
-
-		if err != nil {
-			return nil, err
-		}
-
-		return tokens, nil
-
+	if userExists {
+		return nil, err
 	}
 
-	newUser, err := s.auth.CreateUser(usr)
+	response, err := s.auth.GetUser(email, userName)
 	if err != nil {
 		return nil, err
 	}
 
-	if newUser == nil {
-		return nil, nil
+	// if response.Password != password {
+	// 	return nil, fmt.Errorf("%s", "Password doesnot match")
+	// }
+
+	usr := []struct {
+		userName string
+		email    string
+		password string
+		role     string
+		isActive bool
+	}{
+		{
+			userName: userName,
+			email:    email,
+			password: password,
+			role:     "ADMIN",
+			isActive: response.IsActive,
+		},
 	}
 
-	tokens, err := s.jwtManager.GenerateTokens(newUser.Name, 1000*time.Second, newUser)
+	tokens, err := s.jwtManager.GenerateTokens("kushal", 10000*time.Minute, usr)
 
-	return tokens, nil
+	if err != nil {
+		return nil, err
+	}
+
+	return &pb.LoginData{
+		Id:           response.Id,
+		Name:         response.Name,
+		UserName:     response.UserName,
+		Email:        response.Email,
+		IsActive:     response.IsActive,
+		AccessToken:  tokens["accessToken"],
+		RefreshToken: tokens["refreshToken"],
+	}, nil
+
 }
 
-func (s *Service) VerifyLoggedInUser(accessToken string) (map[string]string, error) {
-	res, err := s.jwtManager.VerifyToken(accessToken)
+func (s *Service) VerifyLoggedInUser(accessToken string) (map[string]interface{}, error) {
+	_, err := s.jwtManager.VerifyToken(accessToken)
 	if err != nil {
 		return nil, err
 	}
 
-	return res, nil
+	res, err := s.jwtManager.ExtractTokenMetadata(accessToken)
+	if err != nil {
+		fmt.Printf("error occurred%s", err)
+	}
+	fmt.Printf("%s", res)
+	return nil, nil
 }

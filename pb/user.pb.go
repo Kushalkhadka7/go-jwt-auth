@@ -52,9 +52,9 @@ func (User_Role) EnumDescriptor() ([]byte, []int) {
 
 type User struct {
 	Name                 string    `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	Password             string    `protobuf:"bytes,2,opt,name=password,proto3" json:"password,omitempty"`
+	Email                string    `protobuf:"bytes,2,opt,name=email,proto3" json:"email,omitempty"`
 	Role                 User_Role `protobuf:"varint,3,opt,name=role,proto3,enum=pb.User_Role" json:"role,omitempty"`
-	Email                string    `protobuf:"bytes,4,opt,name=email,proto3" json:"email,omitempty"`
+	Password             string    `protobuf:"bytes,4,opt,name=password,proto3" json:"password,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}  `json:"-"`
 	XXX_unrecognized     []byte    `json:"-"`
 	XXX_sizecache        int32     `json:"-"`
@@ -100,9 +100,9 @@ func (m *User) GetName() string {
 	return ""
 }
 
-func (m *User) GetPassword() string {
+func (m *User) GetEmail() string {
 	if m != nil {
-		return m.Password
+		return m.Email
 	}
 	return ""
 }
@@ -114,9 +114,9 @@ func (m *User) GetRole() User_Role {
 	return User_UNKNOWN
 }
 
-func (m *User) GetEmail() string {
+func (m *User) GetPassword() string {
 	if m != nil {
-		return m.Email
+		return m.Password
 	}
 	return ""
 }
@@ -133,16 +133,16 @@ var fileDescriptor_d570e3e37e5899c5 = []byte{
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x12, 0x28, 0x28, 0xca, 0x2f,
 	0xc9, 0xd7, 0x2f, 0x2d, 0x4e, 0x2d, 0xd2, 0x03, 0x33, 0x85, 0x98, 0x0a, 0x92, 0x94, 0x66, 0x32,
 	0x72, 0xb1, 0x84, 0x16, 0xa7, 0x16, 0x09, 0x09, 0x71, 0xb1, 0xe4, 0x25, 0xe6, 0xa6, 0x4a, 0x30,
-	0x2a, 0x30, 0x6a, 0x70, 0x06, 0x81, 0xd9, 0x42, 0x52, 0x5c, 0x1c, 0x05, 0x89, 0xc5, 0xc5, 0xe5,
-	0xf9, 0x45, 0x29, 0x12, 0x4c, 0x60, 0x71, 0x38, 0x5f, 0x48, 0x91, 0x8b, 0xa5, 0x28, 0x3f, 0x27,
-	0x55, 0x82, 0x59, 0x81, 0x51, 0x83, 0xcf, 0x88, 0x57, 0xaf, 0x20, 0x49, 0x0f, 0x64, 0x8e, 0x5e,
-	0x50, 0x7e, 0x4e, 0x6a, 0x10, 0x58, 0x4a, 0x48, 0x84, 0x8b, 0x35, 0x35, 0x37, 0x31, 0x33, 0x47,
-	0x82, 0x05, 0xac, 0x17, 0xc2, 0x51, 0xd2, 0xe0, 0x62, 0x01, 0xa9, 0x11, 0xe2, 0xe6, 0x62, 0x0f,
+	0x2a, 0x30, 0x6a, 0x70, 0x06, 0x81, 0xd9, 0x42, 0x22, 0x5c, 0xac, 0xa9, 0xb9, 0x89, 0x99, 0x39,
+	0x12, 0x4c, 0x60, 0x41, 0x08, 0x47, 0x48, 0x91, 0x8b, 0xa5, 0x28, 0x3f, 0x27, 0x55, 0x82, 0x59,
+	0x81, 0x51, 0x83, 0xcf, 0x88, 0x57, 0xaf, 0x20, 0x49, 0x0f, 0x64, 0x82, 0x5e, 0x50, 0x7e, 0x4e,
+	0x6a, 0x10, 0x58, 0x4a, 0x48, 0x8a, 0x8b, 0xa3, 0x20, 0xb1, 0xb8, 0xb8, 0x3c, 0xbf, 0x28, 0x45,
+	0x82, 0x05, 0xac, 0x17, 0xce, 0x57, 0xd2, 0xe0, 0x62, 0x01, 0xa9, 0x14, 0xe2, 0xe6, 0x62, 0x0f,
 	0xf5, 0xf3, 0xf6, 0xf3, 0x0f, 0xf7, 0x13, 0x60, 0x10, 0xe2, 0xe4, 0x62, 0x75, 0x74, 0xf1, 0xf5,
 	0xf4, 0x13, 0x60, 0x14, 0xe2, 0xe0, 0x62, 0x09, 0x0d, 0x76, 0x0d, 0x12, 0x60, 0x72, 0x92, 0x3c,
 	0xf1, 0x48, 0x8e, 0xf1, 0xc2, 0x23, 0x39, 0xc6, 0x07, 0x8f, 0xe4, 0x18, 0x67, 0x3c, 0x96, 0x63,
 	0x88, 0x62, 0xd7, 0xb3, 0x8e, 0x8f, 0x8f, 0x2f, 0x48, 0x4a, 0x62, 0x03, 0xfb, 0xc0, 0x18, 0x10,
-	0x00, 0x00, 0xff, 0xff, 0x38, 0x8b, 0x2c, 0xc7, 0xd5, 0x00, 0x00, 0x00,
+	0x00, 0x00, 0xff, 0xff, 0xe2, 0xe0, 0x42, 0xf4, 0xd5, 0x00, 0x00, 0x00,
 }
 
 func (m *User) Marshal() (dAtA []byte, err error) {
@@ -169,10 +169,10 @@ func (m *User) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		i -= len(m.XXX_unrecognized)
 		copy(dAtA[i:], m.XXX_unrecognized)
 	}
-	if len(m.Email) > 0 {
-		i -= len(m.Email)
-		copy(dAtA[i:], m.Email)
-		i = encodeVarintUser(dAtA, i, uint64(len(m.Email)))
+	if len(m.Password) > 0 {
+		i -= len(m.Password)
+		copy(dAtA[i:], m.Password)
+		i = encodeVarintUser(dAtA, i, uint64(len(m.Password)))
 		i--
 		dAtA[i] = 0x22
 	}
@@ -181,10 +181,10 @@ func (m *User) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		i--
 		dAtA[i] = 0x18
 	}
-	if len(m.Password) > 0 {
-		i -= len(m.Password)
-		copy(dAtA[i:], m.Password)
-		i = encodeVarintUser(dAtA, i, uint64(len(m.Password)))
+	if len(m.Email) > 0 {
+		i -= len(m.Email)
+		copy(dAtA[i:], m.Email)
+		i = encodeVarintUser(dAtA, i, uint64(len(m.Email)))
 		i--
 		dAtA[i] = 0x12
 	}
@@ -219,14 +219,14 @@ func (m *User) Size() (n int) {
 	if l > 0 {
 		n += 1 + l + sovUser(uint64(l))
 	}
-	l = len(m.Password)
+	l = len(m.Email)
 	if l > 0 {
 		n += 1 + l + sovUser(uint64(l))
 	}
 	if m.Role != 0 {
 		n += 1 + sovUser(uint64(m.Role))
 	}
-	l = len(m.Email)
+	l = len(m.Password)
 	if l > 0 {
 		n += 1 + l + sovUser(uint64(l))
 	}
@@ -305,57 +305,6 @@ func (m *User) Unmarshal(dAtA []byte) error {
 			iNdEx = postIndex
 		case 2:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Password", wireType)
-			}
-			var stringLen uint64
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowUser
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				stringLen |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-			intStringLen := int(stringLen)
-			if intStringLen < 0 {
-				return ErrInvalidLengthUser
-			}
-			postIndex := iNdEx + intStringLen
-			if postIndex < 0 {
-				return ErrInvalidLengthUser
-			}
-			if postIndex > l {
-				return io.ErrUnexpectedEOF
-			}
-			m.Password = string(dAtA[iNdEx:postIndex])
-			iNdEx = postIndex
-		case 3:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Role", wireType)
-			}
-			m.Role = 0
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return ErrIntOverflowUser
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				m.Role |= User_Role(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-		case 4:
-			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Email", wireType)
 			}
 			var stringLen uint64
@@ -385,6 +334,57 @@ func (m *User) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			m.Email = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Role", wireType)
+			}
+			m.Role = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowUser
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Role |= User_Role(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Password", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowUser
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthUser
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthUser
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Password = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
